@@ -1,8 +1,14 @@
 class RecipeCard extends HTMLElement {
   constructor() {
     // Part 1 Expose - TODO
-
+  
     // You'll want to attach the shadow DOM here
+
+    // Reference to https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM
+    // Always call super first in constructor
+    super();
+    // Create a shadow root
+    this.attachShadow({mode: 'open'});
   }
 
   set data(data) {
@@ -100,6 +106,52 @@ class RecipeCard extends HTMLElement {
     // created in the constructor()
 
     // Part 1 Expose - TODO
+
+    let img = document.createElement('img');
+    let imageUrl = searchForKey(data,'thumbnailUrl');
+    //console.log(imageUrl);
+    img.setAttribute('src',imageUrl);
+    let headline = searchForKey(data,'headline');
+    //console.log(headline);
+    img.setAttribute('alt',headline);
+
+    let pTitle = document.createElement('p');
+    pTitle.className = "title";
+
+    let hyperlink = document.createElement('a');
+    hyperlink.href = getUrl(data);
+    hyperlink.innerText = headline;
+
+    let pOrganization = document.createElement('p');
+    pOrganization.className = "organization";
+    pOrganization.innerText = getOrganization(data);
+
+    let divRating = document.createElement('div');
+    divRating.className = "rating";
+
+    let span = document.createElement('span');
+    span.innerText = "No Reviews";
+    // TBD
+    
+    let time = document.createElement('time');
+    let totalTime = searchForKey(data,'totalTime');
+    time.innerText = convertTime(totalTime);
+
+    let pIngredients = document.createElement('p');
+    pIngredients.className = "ingredients";
+    let recipeIngredient = searchForKey(data,'recipeIngredient');
+    pIngredients.innerText = createIngredientList(recipeIngredient); 
+    
+    this.appendChild(card);
+      card.appendChild(img);
+      card.appendChild(pTitle);
+        pTitle.appendChild(hyperlink);
+      card.appendChild(pOrganization);
+      card.appendChild(divRating);
+        divRating.appendChild(span);
+      card.appendChild(time);
+      card.appendChild(pIngredients);
+    this.appendChild(styleElem);
   }
 }
 
