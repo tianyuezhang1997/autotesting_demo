@@ -8,7 +8,7 @@ class RecipeCard extends HTMLElement {
     // Always call super first in constructor
     super();
     // Create a shadow root
-    this.attachShadow({mode: 'open'});
+    this.shadow = this.attachShadow({mode: 'open'});
   }
 
   set data(data) {
@@ -142,7 +142,7 @@ class RecipeCard extends HTMLElement {
     let recipeIngredient = searchForKey(data,'recipeIngredient');
     pIngredients.innerText = createIngredientList(recipeIngredient); 
     
-    this.appendChild(card);
+    this.shadow.appendChild(card);
       card.appendChild(img);
       card.appendChild(pTitle);
         pTitle.appendChild(hyperlink);
@@ -151,7 +151,7 @@ class RecipeCard extends HTMLElement {
         divRating.appendChild(span);
       card.appendChild(time);
       card.appendChild(pIngredients);
-    this.appendChild(styleElem);
+    this.shadow.appendChild(styleElem);
   }
 }
 
