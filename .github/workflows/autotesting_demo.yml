@@ -9,4 +9,4 @@ jobs:
       - name: Install TestCafe from 'npm' and Run Tests
         uses: DevExpress/testcafe-action@latest
         with:
-          args: "chrome https://github.com/tianyuezhang1997/autotesting_demo/edit/main/.github/workflows/autotesting_demo.js"
+          args: "chrome autotesting_demo.js"
