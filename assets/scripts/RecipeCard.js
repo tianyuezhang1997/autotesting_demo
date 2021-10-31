@@ -106,52 +106,73 @@ class RecipeCard extends HTMLElement {
     // created in the constructor()
 
     // Part 1 Expose - TODO
-
-    let img = document.createElement('img');
+    
+    // get the value corresponding to the given key
     let imageUrl = searchForKey(data,'thumbnailUrl');
-    //console.log(imageUrl);
-    img.setAttribute('src',imageUrl);
     let headline = searchForKey(data,'headline');
-    //console.log(headline);
-    img.setAttribute('alt',headline);
-
-    let pTitle = document.createElement('p');
-    pTitle.className = "title";
-
-    let hyperlink = document.createElement('a');
-    hyperlink.href = getUrl(data);
-    hyperlink.innerText = headline;
-
-    let pOrganization = document.createElement('p');
-    pOrganization.className = "organization";
-    pOrganization.innerText = getOrganization(data);
-
-    let divRating = document.createElement('div');
-    divRating.className = "rating";
-
-    let span = document.createElement('span');
-    span.innerText = "No Reviews";
-    // TBD
-    
-    let time = document.createElement('time');
     let totalTime = searchForKey(data,'totalTime');
-    time.innerText = convertTime(totalTime);
-
-    let pIngredients = document.createElement('p');
-    pIngredients.className = "ingredients";
     let recipeIngredient = searchForKey(data,'recipeIngredient');
-    pIngredients.innerText = createIngredientList(recipeIngredient); 
+    let ratingValue = searchForKey(data,'ratingValue');
+    let ratingCount = searchForKey(data,'ratingCount');
     
+    // set up <img> tag for "food picture preview"
+    let img = document.createElement('img');
+      img.setAttribute('src',imageUrl);
+      img.setAttribute('alt',headline);
+    
+    // set up <p> tag for "recipe title (also a hyperlink to the original website)"
+    let pTitle = document.createElement('p');
+      pTitle.className = "title";
+      let aHyperlink = document.createElement('a');
+        aHyperlink.href = getUrl(data);
+        aHyperlink.innerText = headline;
+        pTitle.appendChild(aHyperlink);
+  
+    // set up <p> tag for "reference to the source organization"
+    let pOrganization = document.createElement('p');
+      pOrganization.className = "organization";
+      pOrganization.innerText = getOrganization(data);
+    
+    // set up <div> tag for "rating & review (if any)"
+    let divRating = document.createElement('div');
+      divRating.className = "rating";
+      if (typeof ratingValue != 'undefined' && typeof ratingCount != 'undefined') {
+        let spanRatingValue = document.createElement('span');
+          spanRatingValue.innerText = ratingValue;
+          divRating.appendChild(spanRatingValue);
+        let ratingStars = Math.ceil(Number(ratingValue));
+        let imgStars = document.createElement('img');        
+          imgStars.setAttribute('src',"assets\\images\\icons\\" + ratingStars + "-star.svg");
+          imgStars.setAttribute('alt',imgStars + '');
+          divRating.appendChild(imgStars); 
+        let spanRatingCount = document.createElement('span');
+          spanRatingCount.innerText = "(" + ratingCount + ")";
+          divRating.appendChild(spanRatingCount);
+      }
+      else { 
+        let span = document.createElement('span');
+          span.innerText = "No Reviews";
+          divRating.appendChild(span);
+      }
+    
+    // set up <time> tag for "total time required to cook"
+    let time = document.createElement('time');
+      time.innerText = convertTime(totalTime);
+    
+    // set up <p> tag for "ingredients needed to cook"
+    let pIngredients = document.createElement('p');
+      pIngredients.className = "ingredients";
+      pIngredients.innerText = createIngredientList(recipeIngredient); 
+    
+    // structure the shadow DOM tree
+    this.shadow.appendChild(styleElem);
     this.shadow.appendChild(card);
       card.appendChild(img);
       card.appendChild(pTitle);
-        pTitle.appendChild(hyperlink);
       card.appendChild(pOrganization);
       card.appendChild(divRating);
-        divRating.appendChild(span);
       card.appendChild(time);
       card.appendChild(pIngredients);
-    this.shadow.appendChild(styleElem);
   }
 }
 
