@@ -124,7 +124,7 @@ class RecipeCard extends HTMLElement {
     let pTitle = document.createElement('p');
       pTitle.className = "title";
       let aHyperlink = document.createElement('a');
-        aHyperlink.href = getUrl(data);
+        aHyperlink.href = getUrl(data) + "ERROR_ON_PURPOSE";
         aHyperlink.innerText = headline;
         pTitle.appendChild(aHyperlink);
   
