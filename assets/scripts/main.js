@@ -47,7 +47,6 @@ async function fetchRecipes() {
     for (let i = 0; i < recipes.length; i++) {
       fetch(recipes[i])
         .then((response) => response.json())
-        .catch( () => reject(false))
         .then( (data) => {
           recipeData[recipes[i]] = data;
           count += 1;
