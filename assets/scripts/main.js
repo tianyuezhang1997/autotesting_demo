@@ -107,7 +107,7 @@ function bindShowMore() {
         recipeCard.data = data;
         main.appendChild(recipeCard);
       }
-      button.innerText = "Show less";
+      //button.innerText = "Show less";
       const arrowImage = document.querySelector('#button-wrapper img');
       arrowImage.src = "assets/images/icons/arrow-up.png";
       arrowImage.alt = "Arrow up"; 
