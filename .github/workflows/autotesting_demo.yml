@@ -1,8 +1,14 @@
 name: autotesting_demo
-on: [push]
+on: 
+  push:
+    branches:
+      - pending
+  pull_request:
+    branches:
+      - pending
 jobs:
   build:
-    name: Run TestCafe Tests
+    name: Run TestCafe Tests on pending repo
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
