@@ -5,7 +5,7 @@ on:
       - pending
   pull_request:
     branches:
-      - pending
+      - main
 jobs:
   build:
     name: Run TestCafe Tests on pending repo
