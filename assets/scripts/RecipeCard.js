@@ -110,7 +110,15 @@ class RecipeCard extends HTMLElement {
     // get the value corresponding to the given key
     let imageUrl = searchForKey(data,'thumbnailUrl');
     let headline = searchForKey(data,'headline');
+    let prepTime = searchForKey(data,'prepTime');
+    let cookTime = searchForKey(data,'cookTime');
     let totalTime = searchForKey(data,'totalTime');
+    if (typeof totalTime == 'undefined') {
+      totalTime = "Prep " + convertTime(prepTime) + " + Cook " + convertTime(cookTime);
+    }
+    else {
+      totalTime = convertTime(totalTime);
+    }
     let recipeIngredient = searchForKey(data,'recipeIngredient');
     let ratingValue = searchForKey(data,'ratingValue');
     let ratingCount = searchForKey(data,'ratingCount');
@@ -157,7 +165,7 @@ class RecipeCard extends HTMLElement {
     
     // set up <time> tag for "total time required to cook"
     let time = document.createElement('time');
-      time.innerText = convertTime(totalTime);
+      time.innerText = totalTime;
     
     // set up <p> tag for "ingredients needed to cook"
     let pIngredients = document.createElement('p');

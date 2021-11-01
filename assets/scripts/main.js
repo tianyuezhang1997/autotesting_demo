@@ -5,7 +5,13 @@
 const recipes = [
   'https://introweb.tech/assets/json/ghostCookies.json',
   'https://introweb.tech/assets/json/birthdayCake.json',
-  'https://introweb.tech/assets/json/chocolateChip.json'
+  'https://introweb.tech/assets/json/chocolateChip.json',
+  // Reference to https://www.recipetineats.com/pearl-barley-soup/
+  'assets/recipes/PearlBarleySoup.json',
+  // Reference to https://www.recipetineats.com/ultimate-roast-lamb-12-hour-shoulder/
+  'assets/recipes/roastLamb.json',
+  // Reference to https://www.recipetineats.com/thai-stir-fried-noodles-pad-see-ew/
+  'assets/recipes/ThaiNoodles.json'
 ];
 
 // Once all of the recipes that were specified above have been fetched, their
@@ -73,7 +79,7 @@ function createRecipeCards() {
   // show any others you've added when the user clicks on the "Show more" button.
   
   // Part 1 Expose - TODO
-  for (let i = 0; i < recipes.length; i++) {
+  for (let i = 0; i < 3; i++) {
     let data = recipeData[recipes[i]];
     const recipeCard = document.createElement('recipe-card');
     const main = document.querySelector('main');
@@ -91,4 +97,31 @@ function bindShowMore() {
   // in the recipeData object where you stored them/
 
   // Part 2 Explore - TODO
+  let button = document.querySelector('button');
+  button.addEventListener("click", () => {
+    if (button.innerText == "Show more") {
+      for (let i = 3; i < recipes.length; i++) {
+        let data = recipeData[recipes[i]];
+        const recipeCard = document.createElement('recipe-card');
+        const main = document.querySelector('main');
+        recipeCard.data = data;
+        main.appendChild(recipeCard);
+      }
+      button.innerText = "Show less";
+      const arrowImage = document.querySelector('#button-wrapper img');
+      arrowImage.src = "assets/images/icons/arrow-up.png";
+      arrowImage.alt = "Arrow up"; 
+    }
+    else {
+      const main = document.querySelector('main');
+      let numToRemove = recipes.length - 3;
+      for (let i = 0; i < numToRemove; i++) {
+        main.children[3].remove();
+      }
+      button.innerText = "Show more";
+      const arrowImage = document.querySelector('#button-wrapper img');
+      arrowImage.src = "assets/images/icons/arrow-down.png";
+      arrowImage.alt = "Arrow down"; 
+    }
+  });
 }
