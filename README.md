@@ -31,8 +31,7 @@
     - the newly added code passed the test
     - the testing code has been fully updated by the testers      
 
-
-## Workflow Demo
+## Developing Workflow Demo
 ### 1. Manager creates a list of **issues** assigned to specific assignees  
 ![demo_issues.png](/src/demo_issues.png)
 
@@ -85,6 +84,19 @@
     - the **#3** issue will be **reopen** 
     - you need to fix the bug 
     - then make another pull request **party_horn -> pending**  
+
+## Testing Workflow Demo
+- ### 1. manully test UI
+- ### 2. use **TestCafe Studio** to record our action, and the user actions will be auto translated to javascript code
+  - ## **_Important_** :
+    - 1. Make sure old test cases are also included to guarantee **Regression Test** 
+    - 2. The auto generated JS code are **ONLY** able to mimic user actions but are **NOT** able to **verify data**   
+  - ## TO DO : 
+      - learning syntax to verify data by javasript code with TestCafe support 
+- ### 3. edit the auto generated JS code and copy&paste it to **autotesting_demo.js**
+- ### 4. [git push origin] to update the **pending** branch
+- ### 5. make a pull request to the **main** branch
+- ### 6. wait for approval from the meanager
 
  
 
