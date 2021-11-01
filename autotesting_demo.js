@@ -6,5 +6,7 @@ fixture `New Fixture`
 test(`New Test`, async t => {
     await t
         .click(Selector('#button-wrapper button').withText('Show more'))    
-        .click('main recipe-card')
+        .click(Selector('#button-wrapper button').withText('Show less'))
+        .click(Selector('#button-wrapper button').withText('Show more'))
+        .click(Selector('#button-wrapper button').withText('Show less'))
 });
