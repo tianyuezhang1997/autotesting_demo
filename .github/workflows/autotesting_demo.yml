@@ -1,5 +1,11 @@
 name: autotesting_demo
-on: [push]
+on: 
+  push:
+    branches:
+      - pending
+  pull_request:
+    branches:
+      - pending
 jobs:
   build:
     name: Run TestCafe Tests
