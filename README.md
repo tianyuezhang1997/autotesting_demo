@@ -41,9 +41,27 @@
   the assignees should create a new branch named **party_horn**  
   ![demo_branch.png](/src/demo_branch.png)
 
-### 3. Each time you make a **push** to your **branch**, go to the **Actions** section to check the result of our **Global Regression Testing**  
+### 3. Each time you make a **push** to your **branch**, go to the **Actions** section to check the result of our **Regression Test**  
+  - ## **_Important_** :
+    **_Everytime you start working on your local version of the branch_**  
+    **_Make sure your local version is NOT BEHIND your Remote Github Branch_**
+
+    Otherwise, you make encounter the issue below : 
+    - when you excute **[git push origin]**, you many encounter error message as below :
+    > error: failed to push some refs to ...  
+    > hint: Updates were rejected because the remote contains work that you do  
+    > hint: not have locally. This is usually caused by another repository pushing  
+    > hint: to the same ref. You may want to first integrate the remote changes  
+    > hint: (e.g., 'git pull ...') before pushing again.  
+    > hint: See the 'Note about fast-forwards' in 'git push --help' for details.  
+    - this is because you had been working on an **old version of your branch**
+    - which is out of date comparing to your **Remote Github Branch**
+    - you can resolve it by excute **[git pull origin]**
+    - However, make sure you have **staged** all the local changes EX. using **[git add .]** 
+    - Otherwise, **[git pull origin]** will **discard** all **unstaged changes**
+    - which means any work you have not applied **[git add]** on it will **COMPLETELY GONE !!!**
   - Note:
-      - The **Global Regression Testing** will tell you if you have **break** the original product
+      - The **Regression Test** will tell you if you have **break** the original product
       - a **falled** test always prevents you from making any pull request   
   - EX. when you make a **push** to your **party_horn** branch
     if your code pass the test, you will see somthing as below
