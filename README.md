@@ -37,8 +37,7 @@
   - EX. to solve the **#3** issue **sprint task : Expose - Party Horn**  
   the assignees should create a new branch named **party_horn**  
   ![demo_branch.png](/src/demo_branch.png)
-
-### 3. Each time you make a **push** to your **branch**, go to the **Actions** section to check the result of our **Regression Test**  
+ 
   - ## **_Important_** :
     **_Everytime you start working on your local version of the branch_**  
     **_Make sure your local version is NOT BEHIND your Remote Github Branch_**
@@ -57,14 +56,8 @@
     - However, make sure you have **staged** all the local changes EX. using **[git add .]** 
     - Otherwise, **[git pull origin]** will **discard** all **unstaged changes**
     - which means any work you have not applied **[git add]** on it will **COMPLETELY GONE !!!**
-  - Note:
-      - The **Regression Test** will tell you if you have **break** the original product
-      - a **falled** test always prevents you from making any pull request   
-  - EX. when you make a **push** to your **party_horn** branch
-    if your code pass the test, you will see somthing as below
-  ![demo_regression_testing.png](/src/demo_regression_testing.png)  
-
-### 4. Whenever you are condifent, create a pull request to the  **pending** branch the testing team will handle the rest tasks for you  
+    -  
+### 4. Whenever you are condifent your feature is implemented correctly, create a pull request to the  **pending** branch
   - EX. when you are condifent the Party Horn is working  
       - make a pull request **party_horn -> pending**,  
       - and prefixing you pull request name with keywords **Resolves #3** can (temporarily) close the **#3** issue  
@@ -95,6 +88,9 @@
   - waiting the running **Regression Test** (with yellow spinning mark) to finish, 
   - check the testing result : 
     - If passed (green check mark), go to next step
+      - EX. when you approved a pull request from the **party_horn** branch
+        if the new code pass the **Regression Test**, you will see somthing as below
+        ![demo_regression_testing.png](/src/demo_regression_testing.png) 
     - Otherwise (red cross mark), 
       - first make sure the error was not caused by our test suite
       - if lt was the test suite issue, **update*** the test suite code to accommodate tiny changes (such as renamed tages in the html)
