@@ -1,10 +1,13 @@
 # Autotesting Demo (Pending)
 
-## Link to published site 
-- **https://tianyuezhang1997.github.io/autotesting_demo/index.html**    
-
-## E2E Web Testing with TestCafe  
-- **https://testautomationu.applitools.com/testcafe-tutorial/**  
+## Links :
+- Our published site (**pending** branch) : **https://tianyuezhang1997.github.io/autotesting_demo/index.html**    
+- E2E Web Testing with TestCafe : **https://testautomationu.applitools.com/testcafe-tutorial/**  
+- Sections covered :
+  1. [Git Repo Branch Setting Demo](#git-repo-branch-setting-demo) 
+  2. [Developing Workflow Demo](#developing-workflow-demo)  
+  3. [Testing Workflow Demo](#testing-workflow-demo)
+  4. [Managing Workflow Demo](#managing-workflow-demo)
 
 ## Git Repo Branch Setting Demo
 - Note : our branches are divided into two types : **protected** and **NOT protected** 
