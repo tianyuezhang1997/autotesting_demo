@@ -1,18 +1,1 @@
-name: autotesting_demo
-on: 
-  push:
-    branches:
-      - pending
-  pull_request:
-    branches:
-      - main
-jobs:
-  build:
-    name: Run TestCafe Tests on pending repo
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install TestCafe from 'npm' and Run Tests
-        uses: DevExpress/testcafe-action@latest
-        with:
-          args: "chrome autotesting_demo.js"
+
