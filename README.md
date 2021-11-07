@@ -1,4 +1,4 @@
-# Autotesting Demo (Under construction)
+# Autotesting Demo (Under Construction)
 
 ## Links :
 - Our published site (**pending** branch) : **https://tianyuezhang1997.github.io/autotesting_demo/index.html**    
