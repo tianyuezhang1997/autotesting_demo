@@ -1,7 +1,7 @@
 # Autotesting Demo (Under Construction)
 
 ## Links :
-- Currently published page: **https://tianyuezhang1997.github.io/autotesting_demo/index.html**   
+- Currently published page : **https://tianyuezhang1997.github.io/autotesting_demo/index.html**   
 - Set which branch to be published : https://github.com/tianyuezhang1997/autotesting_demo/settings/pages  
 - E2E Web Testing with TestCafe : **https://testautomationu.applitools.com/testcafe-tutorial/**  
 - Sections covered :
