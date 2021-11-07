@@ -13,6 +13,3 @@ jobs:
         uses: DevExpress/testcafe-action@latest
         with:
           args: "chrome push_to_pending_branch.js"
-      - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ADD_LABEL: "Regression Test Passed"
