@@ -1,11 +1,11 @@
-name: push_to_pending_branch
+name: push_to_main_branch
 on: 
   push:
     branches:
-      - pending
+      - main
 jobs:
   build:
-    name: Test the new push to pending branch
+    name: Test the new push to main branch
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,4 +16,4 @@ jobs:
       - name: Install TestCafe from 'npm' and Run Tests
         uses: DevExpress/testcafe-action@latest
         with:
-          args: "chrome push_to_pending_branch.js"
+          args: "chrome main_branch_test.js"

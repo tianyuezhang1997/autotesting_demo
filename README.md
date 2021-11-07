@@ -1,7 +1,8 @@
 # Autotesting Demo (Under Construction)
 
 ## Links :
-- Our published site (**pending** branch) : **https://tianyuezhang1997.github.io/autotesting_demo/index.html**    
+- Currently published page : **https://tianyuezhang1997.github.io/autotesting_demo/index.html**   
+- Set which branch to be published : https://github.com/tianyuezhang1997/autotesting_demo/settings/pages  
 - E2E Web Testing with TestCafe : **https://testautomationu.applitools.com/testcafe-tutorial/**  
 - Sections covered :
   1. [Git Repo Branch Setting Demo](#git-repo-branch-setting-demo) 
@@ -87,6 +88,9 @@
   - since the **TestCafe Studio** auto generated JS code are **ONLY** able to mimic user actions but are **NOT** able to **verify data**       
 - ### 0. Keep an eye on pull request from other branches to the **pending** branch
 - ### 1. Accept **ONLY ONE** pull request at a time
+  - **Before** accepting a pull request from branch named **[x-x-x]** 
+  - create a corresponding pending branch **pending_{x-x-x}** (if not yet)
+  - set the **pending_[x-x-x]** branch as our published page for the testing purpose   
 - ### 2. After accepting a pull request, go to the **Actions** section 
   - waiting the running **Regression Test** (with yellow spinning mark) to finish, 
   - check the testing result : 
