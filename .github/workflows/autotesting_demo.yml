@@ -1,18 +1,16 @@
-name: autotesting_demo
+name: push_to_pending_branch
 on: 
   push:
     branches:
       - pending
-  pull_request:
-    branches:
-      - main
 jobs:
   build:
-    name: Run TestCafe Tests on pending repo
+    name: Test the new push to pending branch
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: ouzi-dev/commit-status-updater@v1.1.0
       - name: Install TestCafe from 'npm' and Run Tests
         uses: DevExpress/testcafe-action@latest
         with:
-          args: "chrome autotesting_demo.js"
+          args: "chrome push_to_pending_branch.js"
