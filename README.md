@@ -88,9 +88,11 @@
   - since the **TestCafe Studio** auto generated JS code are **ONLY** able to mimic user actions but are **NOT** able to **verify data**       
 - ### 0. Keep an eye on pull request from other branches to the **pending** branch
 - ### 1. Accept **ONLY ONE** pull request at a time
-  - **Before** accepting a pull request from branch named **[x-x-x]** 
-  - create a corresponding pending branch **pending_{x-x-x}** (if not yet)
-  - set the **pending_[x-x-x]** branch as our published page for the testing purpose   
+  - **Before** accepting a pull request from branch named **[x-x-x]** to the **pending** branch
+  - set the **[x-x-x]**  branch as our published page for the testing purpose   
+  - manualy run the regression test after the branch is online
+    - If passed, set **pending** branch as the published page, and go to next step
+    - Otherwise, notify the pull request maker to fix the bug 
 - ### 2. After accepting a pull request, go to the **Actions** section 
   - waiting the running **Regression Test** (with yellow spinning mark) to finish, 
   - check the testing result : 
