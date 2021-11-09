@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe';
 
 fixture `New Fixture`
-    .page `https://testing.tianyuezhang1997.site/party_horn/index.html`;
+    .page `https://testing.tianyuezhang1997.site/party_horn/`;
     
 test(`20211109 New Test`, async t => {
     await t
