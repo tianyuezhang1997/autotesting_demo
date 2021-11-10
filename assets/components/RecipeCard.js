@@ -1,20 +1,23 @@
+// RecipeCard.js
+
 class RecipeCard extends HTMLElement {
   constructor() {
-    // Part 1 Expose - TODO
-  
-    // You'll want to attach the shadow DOM here
+    super(); // Inheret everything from HTMLElement
 
-    // Reference to https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM
-    // Always call super first in constructor
-    super();
-    // Create a shadow root
-    this.shadow = this.attachShadow({mode: 'open'});
+    // Attach the shadow DOM and append this markup / stlying inside
+    // The shadow root will help us keep everything separated
+    this.attachShadow({ mode: 'open' });
   }
 
   set data(data) {
-    // This is the CSS that you'll use for your recipe cards
-    const styleElem = document.createElement('style');
-    const styles = `
+    if (!data) return;
+
+    // Used to access the actual data object
+    this.json = data;
+
+    const style = document.createElement('style');
+    const card = document.createElement('article');
+    style.innerHTML = `
       * {
         font-family: sans-serif;
         margin: 0;
@@ -24,7 +27,6 @@ class RecipeCard extends HTMLElement {
       a {
         text-decoration: none;
       }
-
       a:hover {
         text-decoration: underline;
       }
@@ -39,6 +41,18 @@ class RecipeCard extends HTMLElement {
         row-gap: 5px;
         padding: 0 16px 16px 16px;
         width: 178px;
+
+        background-color: white;
+        transition: all 0.2s ease;
+        user-select: none;
+      }
+
+      article:hover {
+        border-radius: 8px;
+        cursor: pointer;
+        filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.2));
+        transition: all 0.2s ease;
+        transform: scale(1.02);
       }
 
       div.rating {
@@ -53,7 +67,6 @@ class RecipeCard extends HTMLElement {
         object-fit: scale-down;
         width: 78px;
       }
-
       article > img {
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
@@ -62,7 +75,6 @@ class RecipeCard extends HTMLElement {
         margin-left: -16px;
         width: calc(100% + 32px);
       }
-
       p.ingredients {
         height: 32px;
         line-height: 16px;
@@ -73,7 +85,6 @@ class RecipeCard extends HTMLElement {
       p.organization {
         color: black !important;
       }
-
       p.title {
         display: -webkit-box;
         font-size: 16px;
@@ -83,113 +94,85 @@ class RecipeCard extends HTMLElement {
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
       }
-
       p:not(.title), span, time {
         color: #70757A;
         font-size: 12px;
       }
     `;
-    styleElem.innerHTML = styles;
 
-    // Here's the root element that you'll want to attach all of your other elements to
-    const card = document.createElement('article');
+    // Grab the title
+    const titleText = getTitle(data);
+    const title = document.createElement('p');
+    title.classList.add('title');
 
-    // Some functions that will be helpful here:
-    //    document.createElement()
-    //    document.querySelector()
-    //    element.classList.add()
-    //    element.setAttribute()
-    //    element.appendChild()
-    //    & All of the helper functions below
+    // Grab the recipe link
+    const href = getUrl(data);
+    const link = document.createElement('a');
+    link.setAttribute('href', href);
+    link.innerText = titleText;
+    title.appendChild(link); // Make the title a link
 
-    // Make sure to attach your root element and styles to the shadow DOM you
-    // created in the constructor()
+    // Grab the thumbnail
+    const imageUrl = getImage(data);
+    const image = document.createElement('img');
+    image.setAttribute('src', imageUrl);
+    image.setAttribute('alt', titleText);
 
-    // Part 1 Expose - TODO
-    
-    // get the value corresponding to the given key
-    let imageUrl = searchForKey(data,'thumbnailUrl');
-    let headline = searchForKey(data,'headline');
-    let prepTime = searchForKey(data,'prepTime');
-    let cookTime = searchForKey(data,'cookTime');
-    let totalTime = searchForKey(data,'totalTime');
-    if (typeof totalTime == 'undefined') {
-      totalTime = "Prep " + convertTime(prepTime) + " + Cook " + convertTime(cookTime);
-    }
-    else {
-      totalTime = convertTime(totalTime);
-    }
-    let recipeIngredient = searchForKey(data,'recipeIngredient');
-    let ratingValue = searchForKey(data,'ratingValue');
-    let ratingCount = searchForKey(data,'ratingCount');
-    
-    // set up <img> tag for "food picture preview"
-    let img = document.createElement('img');
-      img.setAttribute('src',imageUrl);
-      img.setAttribute('alt',headline);
-    
-    // set up <p> tag for "recipe title (also a hyperlink to the original website)"
-    let pTitle = document.createElement('p');
-      pTitle.className = "title";
-      let aHyperlink = document.createElement('a');
-        aHyperlink.href = getUrl(data);
-        aHyperlink.innerText = headline;
-        pTitle.appendChild(aHyperlink);
-  
-    // set up <p> tag for "reference to the source organization"
-    let pOrganization = document.createElement('p');
-      pOrganization.className = "organization";
-      pOrganization.innerText = getOrganization(data);
-    
-    // set up <div> tag for "rating & review (if any)"
-    let divRating = document.createElement('div');
-      divRating.className = "rating";
-      if (typeof ratingValue != 'undefined' && typeof ratingCount != 'undefined') {
-        let spanRatingValue = document.createElement('span');
-          spanRatingValue.innerText = ratingValue;
-          divRating.appendChild(spanRatingValue);
-        let ratingStars = Math.ceil(Number(ratingValue));
-        let imgStars = document.createElement('img');        
-          imgStars.setAttribute('src',"assets\\images\\icons\\" + ratingStars + "-star.svg");
-          imgStars.setAttribute('alt',imgStars + '');
-          divRating.appendChild(imgStars); 
-        let spanRatingCount = document.createElement('span');
-          spanRatingCount.innerText = "(" + ratingCount + ")";
-          divRating.appendChild(spanRatingCount);
+    // Grab the organization name
+    const organizationText = getOrganization(data);
+    const organization = document.createElement('p');
+    organization.classList.add('organization');
+    organization.innerText = organizationText;
+
+    // Grab the reviews
+    const ratingVal = searchForKey(data, 'ratingValue');
+    const ratingTotal = searchForKey(data, 'ratingCount');
+    const rating = document.createElement('div');
+    rating.classList.add('rating');
+    const numStars = Math.round(ratingVal);
+    if (ratingVal) {
+      rating.innerHTML = `
+        <span>${ratingVal}</span>
+        <img src="assets/images/icons/${numStars}-star.svg" alt="${numStars} stars">
+      `;
+      if (ratingTotal) {
+        rating.innerHTML += `<span>(${ratingTotal})</span>`;
       }
-      else { 
-        let span = document.createElement('span');
-          span.innerText = "No Reviews";
-          divRating.appendChild(span);
-      }
-    
-    // set up <time> tag for "total time required to cook"
-    let time = document.createElement('time');
-      time.innerText = totalTime;
-    
-    // set up <p> tag for "ingredients needed to cook"
-    let pIngredients = document.createElement('p');
-      pIngredients.className = "ingredients";
-      pIngredients.innerText = createIngredientList(recipeIngredient); 
-    
-    // structure the shadow DOM tree
-    this.shadow.appendChild(styleElem);
-    this.shadow.appendChild(card);
-      card.appendChild(img);
-      card.appendChild(pTitle);
-      card.appendChild(pOrganization);
-      card.appendChild(divRating);
-      card.appendChild(time);
-      card.appendChild(pIngredients);
+    } else {
+      rating.innerHTML = `
+        <span>No Reviews</span>
+      `;
+    }
+
+    // Grab the total time
+    const totalTime = searchForKey(data, 'totalTime');
+    const time = document.createElement('time');
+    time.innerText = convertTime(totalTime);
+
+    // Grabt the ingredients
+    const ingredientsArr = searchForKey(data, 'recipeIngredient');
+    const ingredientsList = createIngredientList(ingredientsArr);
+    const ingredients = document.createElement('p');
+    ingredients.classList.add('ingredients');
+    ingredients.innerText = ingredientsList;
+
+    // Add all of the elements to the card
+    card.appendChild(image);
+    card.appendChild(title);
+    card.appendChild(organization);
+    card.appendChild(rating);
+    card.appendChild(time);
+    card.appendChild(ingredients);
+
+    this.shadowRoot.append(style, card);
+  }
+
+  get data() {
+    // Stored in .json to avoid calling set data() recursively in a loop.
+    // .json is also exposed so you can technically use that as well
+    return this.json;
   }
 }
-
-
-/*********************************************************************/
-/***                       Helper Functions:                       ***/
-/***          Below are some functions I used when making          ***/
-/***     the solution, feel free to use them or not, up to you     ***/
-/*********************************************************************/
 
 /**
  * Recursively search for a key nested somewhere inside an object
@@ -213,6 +196,44 @@ function searchForKey(object, key) {
 }
 
 /**
+ * Extract the title of the recipe from the given recipe schema JSON obejct
+ * @param {Object} data Raw recipe JSON to find the image of
+ * @returns {String} If found, returns the recipe title
+ */
+function getTitle(data) {
+  if (data.name) return data.name;
+  if (data['@graph']) {
+    for (let i = 0; i < data['@graph'].length; i++) {
+      if (data['@graph'][i]['@type'] == 'Recipe') {
+        if (data['@graph'][i]['name']) return data['@graph'][i]['name'];
+      };
+    }
+  }
+  return null;
+}
+
+/**
+ * Extract a usable image from the given recipe schema JSON object
+ * @param {Object} data Raw recipe JSON to find the image of
+ * @returns {String} If found, returns the URL of the image as a string, otherwise null
+ */
+function getImage(data) {
+  if (data.image?.url) return data.image.url;
+  if (data.image?.contentUrl) return data.image.contentUrl;
+  if (data.image?.thumbnail) return data.image.thumbnail;
+  if (data['@graph']) {
+    for (let i = 0; i < data['@graph'].length; i++) {
+      if (data['@graph'][i]['@type'] == 'ImageObject') {
+        if (data['@graph'][i]['url']) return data['@graph'][i]['url'];
+        if (data['@graph'][i]['contentUrl']) return data['@graph'][i]['contentUrl'];
+        if (data['@graph'][i]['thumbnailUrl']) return data['@graph'][i]['thumbnailUrl'];
+      };
+    }
+  }
+  return null;
+}
+
+/**
  * Extract the URL from the given recipe schema JSON object
  * @param {Object} data Raw recipe JSON to find the URL of
  * @returns {String} If found, it returns the URL as a string, otherwise null
@@ -221,7 +242,7 @@ function getUrl(data) {
   if (data.url) return data.url;
   if (data['@graph']) {
     for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Article') return data['@graph'][i]['@id'];
+      if (data['@graph'][i]['@type'] == 'Recipe') return data['@graph'][i]['@id'];
     }
   };
   return null;
@@ -237,7 +258,7 @@ function getOrganization(data) {
   if (data.publisher?.name) return data.publisher?.name;
   if (data['@graph']) {
     for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Organization') {
+      if (data['@graph'][i]['@type'] == 'WebSite') {
         return data['@graph'][i].name;
       }
     }
@@ -305,6 +326,5 @@ function createIngredientList(ingredientArr) {
   return finalIngredientList.slice(0, -2);
 }
 
-// Define the Class so you can use it as a custom element.
-// This is critical, leave this here and don't touch it
+// Define the Class so you can use it as a custom element
 customElements.define('recipe-card', RecipeCard);
