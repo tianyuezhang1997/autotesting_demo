@@ -1,127 +1,243 @@
 // main.js
 
-// Here is where the recipes that you will fetch.
-// Feel free to add your own here for part 2, if they are local files simply add their path as a string.
+import { Router } from './Router.js';
+
 const recipes = [
   'https://introweb.tech/assets/json/ghostCookies.json',
   'https://introweb.tech/assets/json/birthdayCake.json',
   'https://introweb.tech/assets/json/chocolateChip.json',
-  // Reference to https://www.recipetineats.com/pearl-barley-soup/
-  'assets/recipes/PearlBarleySoup.json',
-  // Reference to https://www.recipetineats.com/ultimate-roast-lamb-12-hour-shoulder/
-  'assets/recipes/roastLamb.json',
-  // Reference to https://www.recipetineats.com/thai-stir-fried-noodles-pad-see-ew/
-  'assets/recipes/ThaiNoodles.json'
+  'https://introweb.tech/assets/json/stuffing.json',
+  'https://introweb.tech/assets/json/turkey.json',
+  'https://introweb.tech/assets/json/pumpkinPie.json'
 ];
+const recipeData = {} // You can access all of the Recipe Data from the JSON files in this variable
 
-// Once all of the recipes that were specified above have been fetched, their
-// data will be added to this object below. You may use whatever you like for the
-// keys as long as it's unique, one suggestion might but the URL itself
-const recipeData = {}
+const router = new Router(function () {
+  /** 
+   * TODO - Part 1 - Step 1
+   * Select the 'section.section--recipe-cards' element and add the "shown" class
+   * Select the 'section.section--recipe-expand' element and remove the "shown" class
+   * 
+   * You should be using DOM selectors such as document.querySelector() and
+   * class modifications with the classList API (e.g. element.classList.add(),
+   * element.classList.remove())
+   * 
+   * This will only be two single lines
+   * If you did this right, you should see just 1 recipe card rendered to the screen
+   */
+  document.querySelector('section.section--recipe-cards').classList.add("shown");
+  document.querySelector('section.section--recipe-expand').classList.remove("shown");
+});
 
 window.addEventListener('DOMContentLoaded', init);
 
-// This is the first function to be called, so when you are tracing your code start here.
+// Initialize function, begins all of the JS code in this file
 async function init() {
-  // fetch the recipes and wait for them to load
-  let fetchSuccessful = await fetchRecipes();
-  // if they didn't successfully load, quit the function
-  if (!fetchSuccessful) {
-    console.log('Recipe fetch unsuccessful');
+  initializeServiceWorker();
+
+  try {
+    await fetchRecipes();
+  } catch (err) {
+    console.log(`Error fetching recipes: ${err}`);
     return;
-  };
-  // Add the first three recipe cards to the page
+  }
+
   createRecipeCards();
-  // Make the "Show more" button functional
   bindShowMore();
+  bindEscKey();
+  bindPopstate();
 }
 
-async function fetchRecipes() {
-  return new Promise((resolve, reject) => {
-    // This function is called for you up above
-    // From this function, you are going to fetch each of the recipes in the 'recipes' array above.
-    // Once you have that data, store it in the 'recipeData' object. You can use whatever you like
-    // for the keys. Once everything in the array has been successfully fetched, call the resolve(true)
-    // callback function to resolve this promise. If there's any error fetching any of the items, call
-    // the reject(false) function.
-    
-    // For part 2 - note that you can fetch local files as well, so store any JSON files you'd like to fetch
-    // in the recipes folder and fetch them from there. You'll need to add their paths to the recipes array.
-
-    // Part 1 Expose - TODO
-    let count = 0;
-    for (let i = 0; i < recipes.length; i++) {
-      fetch(recipes[i])
-        .then((response) => response.json())
-        .then( (data) => {
-          recipeData[recipes[i]] = data;
-          count += 1;
-          if (count == recipes.length) {
-            resolve(true);
-          }
-        })
-        .catch( () => reject(false))
-    }
-  })
-  .then ( (resolveSignal) => { 
-    return resolveSignal;
-  })
-  .catch( (rejectSignal) => {
-    return rejectSignal;
-  })
-}
-
-function createRecipeCards() {
-  // This function is called for you up above.
-  // From within this function you can access the recipe data from the JSON 
-  // files with the recipeData Object above. Make sure you only display the 
-  // three recipes we give you, you'll use the bindShowMore() function to
-  // show any others you've added when the user clicks on the "Show more" button.
-  
-  // Part 1 Expose - TODO
-  for (let i = 0; i < 3; i++) {
-    let data = recipeData[recipes[i]];
-    const recipeCard = document.createElement('recipe-card');
-    const main = document.querySelector('main');
-    recipeCard.data = data;
-    main.appendChild(recipeCard);
+/**
+ * Detects if there's a service worker, then loads it and begins the process
+ * of installing it and getting it running
+ */
+function initializeServiceWorker() {
+  /**
+   *  TODO - Part 2 Step 1
+   *  Initialize the service worker set up in sw.js
+   */
+  // Reference to https://developers.google.com/web/fundamentals/primers/service-workers
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js').then(function(registration) {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
   }
 }
 
-function bindShowMore() {
-  // This function is also called for you up above.
-  // Use this to add the event listener to the "Show more" button, from within 
-  // that listener you can then create recipe cards for the rest of the .json files
-  // that were fetched. You should fetch every recipe in the beginning, whether you
-  // display it or not, so you don't need to fetch them again. Simply access them
-  // in the recipeData object where you stored them/
+/**
+ * Loading JSON into a JS file is oddly not super straightforward (for now), so
+ * I built a function to load in the JSON files for you. It places all of the recipe data
+ * inside the object recipeData like so: recipeData{ 'ghostcookies': ..., 'birthdayCake': ..., etc }
+ */
+async function fetchRecipes() {
+  return new Promise((resolve, reject) => {
+    recipes.forEach(recipe => {
+      fetch(recipe)
+        .then(response => response.json())
+        .then(data => {
+          // This grabs the page name from the URL in the array above
+          data['page-name'] = recipe.split('/').pop().split('.')[0];
+          recipeData[recipe] = data;
+          if (Object.keys(recipeData).length == recipes.length) {
+            resolve();
+          }
+        })
+        .catch(err => {
+          console.log(`Error loading the ${recipe} recipe`);
+          reject(err);
+        });
+    });
+  });
+}
 
-  // Part 2 Explore - TODO
-  let button = document.querySelector('button');
-  button.addEventListener("click", () => {
-    if (button.innerText == "Show more") {
-      for (let i = 3; i < recipes.length; i++) {
-        let data = recipeData[recipes[i]];
-        const recipeCard = document.createElement('recipe-card');
-        const main = document.querySelector('main');
-        recipeCard.data = data;
-        main.appendChild(recipeCard);
+/**
+ * Generates the <recipe-card> elements from the fetched recipes and
+ * appends them to the page
+ */
+function createRecipeCards() {
+  /*
+  // Makes a new recipe card
+  const recipeCard = document.createElement('recipe-card');
+  // Inputs the data for the card. This is just the first recipe in the recipes array,
+  // being used as the key for the recipeData object
+  recipeCard.data = recipeData[recipes[0]];
+
+  // This gets the page name of each of the arrays - which is basically
+  // just the filename minus the .json. Since this is the first element
+  // in our recipes array, the ghostCookies URL, we will receive the .json
+  // for that ghostCookies URL since it's a key in the recipeData object, and
+  // then we'll grab the 'page-name' from it - in this case it will be 'ghostCookies'
+  const page = recipeData[recipes[0]]['page-name'];
+  router.addPage(page, function() {
+    document.querySelector('.section--recipe-cards').classList.remove('shown');
+    document.querySelector('.section--recipe-expand').classList.add('shown');
+    document.querySelector('recipe-expand').data = recipeData[recipes[0]];
+  });
+  bindRecipeCard(recipeCard, page);
+
+  document.querySelector('.recipe-cards--wrapper').appendChild(recipeCard);
+  */
+  
+  /**
+   * TODO - Part 1 - Step 3
+   * Above I made an example card and added a route for the recipe at index 0 in
+   * the recipes array. First, please read through the code in this function to
+   * understand what it is doing. Then, turn this into a for loop to iterate over 
+   * all the recipes. (bonus - add the class 'hidden' to every recipe card with 
+   * an index greater  than 2 in your for loop to make show more button functional)
+   * After this step you should see multiple cards rendered like the end of the last
+   * lab
+   */
+  
+  for (let i = 0; i < recipes.length; i++) {
+    const recipeCard = document.createElement('recipe-card');
+    recipeCard.data = recipeData[recipes[i]];
+    const page = recipeData[recipes[i]]['page-name'];
+    router.addPage(page, function() {
+      document.querySelector('.section--recipe-cards').classList.remove('shown');
+      document.querySelector('.section--recipe-expand').classList.add('shown');
+      document.querySelector('recipe-expand').data = recipeData[recipes[i]];
+    });
+    bindRecipeCard(recipeCard, page);
+    document.querySelector('.recipe-cards--wrapper').appendChild(recipeCard);
+    if (i > 2) {
+      recipeCard.classList.add('hidden');
+    }
+  }
+  
+}
+
+/**
+ * Binds the click event listeners to the "Show more" button so that when it is
+ * clicked more recipes will be shown
+ */
+function bindShowMore() {
+  const showMore = document.querySelector('.button--wrapper > button');
+  const arrow = document.querySelector('.button--wrapper > img');
+  const cardsWrapper = document.querySelector('.recipe-cards--wrapper');
+
+  showMore.addEventListener('click', () => {
+    const cards = Array.from(cardsWrapper.children);
+    // The .flipped class rotates the little arrow on the button
+    arrow.classList.toggle('flipped');
+    // Check if it's extended or not
+    if (showMore.innerText == 'Show more') {
+      for (let i = 0; i < cards.length; i++) {
+        cards[i].classList.remove('hidden');
       }
-      button.innerText = "Show less";
-      const arrowImage = document.querySelector('#button-wrapper img');
-      arrowImage.src = "assets/images/icons/arrow-up.png";
-      arrowImage.alt = "Arrow up"; 
+      showMore.innerText = 'Show less';
+    } else {
+      for (let i = 3; i < cards.length; i++) {
+        cards[i].classList.add('hidden');
+      }
+      showMore.innerText = 'Show more';
+    }
+  });
+}
+
+/**
+ * Binds the click event listener to the <recipe-card> elements added to the page
+ * so that when they are clicked, their card expands into the full recipe view mode
+ * @param {Element} recipeCard the <recipe-card> element you wish to bind the event
+ *                             listeners to
+ * @param {String} pageName the name of the page to navigate to on click
+ */
+function bindRecipeCard(recipeCard, pageName) {
+  recipeCard.addEventListener('click', e => {
+    if (e.path[0].nodeName == 'A') return;
+    router.navigate(pageName);
+  });
+}
+
+/**
+ * Binds the 'keydown' event listener to the Escape key (esc) such that when
+ * it is clicked, the home page is returned to
+ */
+function bindEscKey() {
+  /**
+   * TODO - Part 1 Step 5
+   * For this step, add an event listener to document for the 'keydown' event,
+   * if the escape key is pressed, use your router to navigate() to the 'home'
+   * page. This will let us go back to the home page from the detailed page.
+   */
+  document.addEventListener('keydown', event => {
+    if (event.code === "Escape") {
+      router.navigate('home');
+    }
+  });
+}
+
+/**
+ * Binds the 'popstate' event on the window (which fires when the back &
+ * forward buttons are pressed) so the navigation will continue to work 
+ * as expected. (Hint - you should be passing in which page you are on
+ * in your Router when you push your state so you can access that page
+ * info in your popstate function)
+ */
+function bindPopstate() {
+  /**
+   * TODO - Part 1 Step 6
+   * Finally, add an event listener to the window object for the 'popstate'
+   * event - this fires when the forward or back buttons are pressed in a browser.
+   * If your event has a state object that you passed in, navigate to that page,
+   * otherwise navigate to 'home'.
+   * 
+   * IMPORTANT: Pass in the boolean true as the second argument in navigate() here
+   * so your navigate() function does not add your going back action to the history,
+   * creating an infinite loop
+   */
+   window.addEventListener('popstate', (event) => {
+    let page = event.state;
+    if (page != null) {
+      router.navigate(page,true);
     }
     else {
-      const main = document.querySelector('main');
-      let numToRemove = recipes.length - 3;
-      for (let i = 0; i < numToRemove; i++) {
-        main.children[3].remove();
-      }
-      button.innerText = "Show more";
-      const arrowImage = document.querySelector('#button-wrapper img');
-      arrowImage.src = "assets/images/icons/arrow-down.png";
-      arrowImage.alt = "Arrow down"; 
+      router.navigate('home',true);  
     }
   });
 }
