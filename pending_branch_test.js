@@ -1,14 +1,15 @@
 import { Selector } from 'testcafe';
 
 fixture `New Fixture`
-    .page `https://tianyuezhang1997.github.io/autotesting_demo/index.html`;
+    .page `https://testing.tianyuezhang1997.site/pending/`;
     
-test(`20211107 New Test`, async t => {
+test(`20211110 New Test`, async t => {
     await t
-        .click(Selector('#button-wrapper button').withText('Show more'))    
-        .click(Selector('#button-wrapper button').withText('Show less'))
-        .click(Selector('#button-wrapper button').withText('Show more'))
-        .click(Selector('#button-wrapper button').withText('Show less'))
+        
+        .click(Selector('main button').withText('Show more'))    
+        .click(Selector('main button').withText('Show less'))
+        .click(Selector('main button').withText('Show more'))    
+        .click(Selector('main button').withText('Show less'))
         .click(Selector('footer a').withText('Expose - Party Horn'))
         .click('main [name="horn"]')
         .click(Selector('main option').withText('Air Horn'))
