@@ -19,4 +19,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ls -al
-      - run: npx prettier --check .
+      - run: npx prettier --check .{js,html,css}
