@@ -18,4 +18,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: cd ..
+      - run: pwd
       - run: npx prettier --check .
