@@ -17,4 +17,5 @@ jobs:
     name: Check code style with prettier
     runs-on: windows-latest
     steps:
+      - run: npm install
       - run: npm run format
