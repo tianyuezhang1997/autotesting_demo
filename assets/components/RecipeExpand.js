@@ -3,11 +3,11 @@
 class RecipeExpand extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({mode: "open"});
 
     // Create styles and root element
-    const styles = document.createElement('style');
-    const article = document.createElement('article');
+    const styles = document.createElement("style");
+    const article = document.createElement("article");
 
     // Fill in styles and root element
     styles.innerHTML = `
@@ -168,7 +168,7 @@ class RecipeExpand extends HTMLElement {
     this.json = data;
 
     // Reset HTML
-    this.shadowRoot.querySelector('article').innerHTML = `
+    this.shadowRoot.querySelector("article").innerHTML = `
       <header>
         <h1></h1>
         <div class="meta--wrapper">
@@ -198,34 +198,34 @@ class RecipeExpand extends HTMLElement {
 
     // Set Title
     const title = getTitle(data).toUpperCase();
-    this.shadowRoot.querySelector('header > h1').innerHTML = title;
+    this.shadowRoot.querySelector("header > h1").innerHTML = title;
 
     // Set the Servings yield
     const servingsYield = getYield(data);
-    this.shadowRoot.querySelector('.meta--yield').innerHTML = servingsYield;
+    this.shadowRoot.querySelector(".meta--yield").innerHTML = servingsYield;
 
     // Set the total time
-    const totalTime = convertTime(searchForKey(data, 'totalTime'));
-    this.shadowRoot.querySelector('.meta--total-time').innerHTML = totalTime;
+    const totalTime = convertTime(searchForKey(data, "totalTime"));
+    this.shadowRoot.querySelector(".meta--total-time").innerHTML = totalTime;
 
     // Set Categories
     const categories = getCategories(data);
-    this.shadowRoot.querySelector('.meta--categories').innerHTML = categories;
+    this.shadowRoot.querySelector(".meta--categories").innerHTML = categories;
 
     // Set Description
     const description = getDescription(data);
-    this.shadowRoot.querySelector('p.description').innerHTML = description;
+    this.shadowRoot.querySelector("p.description").innerHTML = description;
 
     // Set Image
     const imgSrc = getImage(data);
-    const img = this.shadowRoot.querySelector('img.thumbnail');
-    img.setAttribute('src', imgSrc);
-    img.setAttribute('alt', title);
+    const img = this.shadowRoot.querySelector("img.thumbnail");
+    img.setAttribute("src", imgSrc);
+    img.setAttribute("alt", title);
 
     // Set Ratings
-    const ratingVal = searchForKey(data, 'ratingValue');
-    let ratingTotal = searchForKey(data, 'ratingCount');
-    const rating = this.shadowRoot.querySelector('.rating--wrapper');
+    const ratingVal = searchForKey(data, "ratingValue");
+    let ratingTotal = searchForKey(data, "ratingCount");
+    const rating = this.shadowRoot.querySelector(".rating--wrapper");
     const numStars = Math.round(ratingVal);
     if (ratingVal) {
       rating.innerHTML = `
@@ -234,7 +234,7 @@ class RecipeExpand extends HTMLElement {
       from
       `;
       if (!ratingTotal) {
-        ratingTotal = 'some';
+        ratingTotal = "some";
       }
       rating.innerHTML += `<span class="rating-total">${ratingTotal} votes</span>`;
     } else {
@@ -245,18 +245,22 @@ class RecipeExpand extends HTMLElement {
 
     // Set Ingredients
     const ingredients = getIngredients(data);
-    ingredients.forEach(ingredient => {
-      const listItem = document.createElement('li');
+    ingredients.forEach((ingredient) => {
+      const listItem = document.createElement("li");
       listItem.innerHTML = ingredient;
-      this.shadowRoot.querySelector('.section--ingredients > ul').append(listItem);
+      this.shadowRoot
+        .querySelector(".section--ingredients > ul")
+        .append(listItem);
     });
 
     // Set Instructions
     const instructions = getInstructions(data);
-    instructions.forEach(instruction => {
-      const listItem = document.createElement('li');
+    instructions.forEach((instruction) => {
+      const listItem = document.createElement("li");
       listItem.innerHTML = instruction;
-      this.shadowRoot.querySelector('.section--instructions > ol').append(listItem);
+      this.shadowRoot
+        .querySelector(".section--instructions > ol")
+        .append(listItem);
     });
   }
 
@@ -281,7 +285,7 @@ function searchForKey(object, key) {
       value = object[k];
       return true;
     }
-    if (object[k] && typeof object[k] === 'object') {
+    if (object[k] && typeof object[k] === "object") {
       value = searchForKey(object[k], key);
       return value !== undefined;
     }
@@ -296,11 +300,11 @@ function searchForKey(object, key) {
  */
 function getTitle(data) {
   if (data.name) return data.name;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') {
-        if (data['@graph'][i]['name']) return data['@graph'][i]['name'];
-      };
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "Recipe") {
+        if (data["@graph"][i]["name"]) return data["@graph"][i]["name"];
+      }
     }
   }
   return null;
@@ -313,14 +317,14 @@ function getTitle(data) {
  */
 function getYield(data) {
   if (data.recipeYield) return data.recipeYield;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') {
-        if (data['@graph'][i]['recipeYield']) {
-          if (Array.isArray(data['@graph'][i]['recipeYield'])) {
-            return data['@graph'][i]['recipeYield'][0];
-          } else if (typeof data['@graph'][i]['recipeYield'] == 'string') {
-            return data['@graph'][i]['recipeYield'];
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "Recipe") {
+        if (data["@graph"][i]["recipeYield"]) {
+          if (Array.isArray(data["@graph"][i]["recipeYield"])) {
+            return data["@graph"][i]["recipeYield"][0];
+          } else if (typeof data["@graph"][i]["recipeYield"] == "string") {
+            return data["@graph"][i]["recipeYield"];
           }
         }
       }
@@ -337,17 +341,17 @@ function getYield(data) {
 function getCategories(data) {
   let categories = null;
   if (data.recipeCategory) {
-    categories = data.recipeCategory
-  } else if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') {
-        if (data['@graph'][i]['recipeCategory']) {
-          categories = data['@graph'][i]['recipeCategory'];
+    categories = data.recipeCategory;
+  } else if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "Recipe") {
+        if (data["@graph"][i]["recipeCategory"]) {
+          categories = data["@graph"][i]["recipeCategory"];
         }
-      };
+      }
     }
   }
-  if (Array.isArray(categories)) categories = categories.join(', ');
+  if (Array.isArray(categories)) categories = categories.join(", ");
   return categories.toLowerCase();
 }
 
@@ -358,10 +362,10 @@ function getCategories(data) {
  */
 function getDescription(data) {
   if (data.description) return data.description;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') {
-        return data['@graph'][i]['description'];
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "Recipe") {
+        return data["@graph"][i]["description"];
       }
     }
   }
@@ -377,13 +381,15 @@ function getImage(data) {
   if (data.image?.url) return data.image.url;
   if (data.image?.contentUrl) return data.image.contentUrl;
   if (data.image?.thumbnail) return data.image.thumbnail;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'ImageObject') {
-        if (data['@graph'][i]['url']) return data['@graph'][i]['url'];
-        if (data['@graph'][i]['contentUrl']) return data['@graph'][i]['contentUrl'];
-        if (data['@graph'][i]['thumbnailUrl']) return data['@graph'][i]['thumbnailUrl'];
-      };
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "ImageObject") {
+        if (data["@graph"][i]["url"]) return data["@graph"][i]["url"];
+        if (data["@graph"][i]["contentUrl"])
+          return data["@graph"][i]["contentUrl"];
+        if (data["@graph"][i]["thumbnailUrl"])
+          return data["@graph"][i]["thumbnailUrl"];
+      }
     }
   }
   return null;
@@ -396,11 +402,12 @@ function getImage(data) {
  */
 function getUrl(data) {
   if (data.url) return data.url;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') return data['@graph'][i]['@id'];
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "Recipe")
+        return data["@graph"][i]["@id"];
     }
-  };
+  }
   return null;
 }
 
@@ -412,13 +419,13 @@ function getUrl(data) {
  */
 function getOrganization(data) {
   if (data.publisher?.name) return data.publisher?.name;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'WebSite') {
-        return data['@graph'][i].name;
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "WebSite") {
+        return data["@graph"][i].name;
       }
     }
-  };
+  }
   return null;
 }
 
@@ -429,25 +436,25 @@ function getOrganization(data) {
  * @return {String} formatted time string
  */
 function convertTime(time) {
-  let timeStr = '';
+  let timeStr = "";
 
   // Remove the 'PT'
   time = time.slice(2);
 
-  let timeArr = time.split('');
-  if (time.includes('H')) {
+  let timeArr = time.split("");
+  if (time.includes("H")) {
     for (let i = 0; i < timeArr.length; i++) {
-      if (timeArr[i] == 'H') return `${timeStr} hr`;
+      if (timeArr[i] == "H") return `${timeStr} hr`;
       timeStr += timeArr[i];
     }
   } else {
     for (let i = 0; i < timeArr.length; i++) {
-      if (timeArr[i] == 'M') return `${timeStr} min`;
+      if (timeArr[i] == "M") return `${timeStr} min`;
       timeStr += timeArr[i];
     }
   }
 
-  return '';
+  return "";
 }
 
 /**
@@ -457,19 +464,19 @@ function convertTime(time) {
  */
 function getIngredients(data) {
   if (data.recipeIngredient) {
-    if (typeof data.recipeIngredient == 'string') {
-      return data.recipeIngredient.slit('. ');
+    if (typeof data.recipeIngredient == "string") {
+      return data.recipeIngredient.slit(". ");
     }
     return data.recipeIngredient;
-  };
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') {
-        if (typeof data['@graph'][i]['recipeIngredient'] == 'string') {
-          return data['@graph'][i]['recipeIngredient'].slit('. ');
+  }
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "Recipe") {
+        if (typeof data["@graph"][i]["recipeIngredient"] == "string") {
+          return data["@graph"][i]["recipeIngredient"].slit(". ");
         }
-        return data['@graph'][i]['recipeIngredient'];
-      };
+        return data["@graph"][i]["recipeIngredient"];
+      }
     }
   }
   return null;
@@ -483,32 +490,34 @@ function getIngredients(data) {
  */
 function getInstructions(data) {
   if (data.recipeInstructions) {
-    if (typeof data.recipeInstructions == 'string') {
-      return data.recipeInstructions.split('. ');
+    if (typeof data.recipeInstructions == "string") {
+      return data.recipeInstructions.split(". ");
     }
     return data.recipeInstructions;
-  };
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') {
-        if (data['@graph'][i]['recipeInstructions'] == 'string') {
-          return data['@graph'][i]['recipeInstructions'].split('. ');
+  }
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "Recipe") {
+        if (data["@graph"][i]["recipeInstructions"] == "string") {
+          return data["@graph"][i]["recipeInstructions"].split(". ");
         }
-        if (data['@graph'][i]['recipeInstructions'][0]['itemListElement']) {
+        if (data["@graph"][i]["recipeInstructions"][0]["itemListElement"]) {
           const instructionArr = [];
-          data['@graph'][i]['recipeInstructions'].forEach(instrObj => {
-            instrObj.itemListElement.forEach(instruction => {
+          data["@graph"][i]["recipeInstructions"].forEach((instrObj) => {
+            instrObj.itemListElement.forEach((instruction) => {
               instructionArr.push(instruction.text);
             });
           });
           return instructionArr;
         } else {
-          return data['@graph'][i]['recipeInstructions'].map(instr => instr.text);
+          return data["@graph"][i]["recipeInstructions"].map(
+            (instr) => instr.text
+          );
         }
-      };
+      }
     }
   }
   return null;
 }
 
-customElements.define('recipe-expand', RecipeExpand);
+customElements.define("recipe-expand", RecipeExpand);

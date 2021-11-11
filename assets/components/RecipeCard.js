@@ -6,7 +6,7 @@ class RecipeCard extends HTMLElement {
 
     // Attach the shadow DOM and append this markup / stlying inside
     // The shadow root will help us keep everything separated
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({mode: "open"});
   }
 
   set data(data) {
@@ -15,8 +15,8 @@ class RecipeCard extends HTMLElement {
     // Used to access the actual data object
     this.json = data;
 
-    const style = document.createElement('style');
-    const card = document.createElement('article');
+    const style = document.createElement("style");
+    const card = document.createElement("article");
     style.innerHTML = `
       * {
         font-family: sans-serif;
@@ -102,33 +102,33 @@ class RecipeCard extends HTMLElement {
 
     // Grab the title
     const titleText = getTitle(data);
-    const title = document.createElement('p');
-    title.classList.add('title');
+    const title = document.createElement("p");
+    title.classList.add("title");
 
     // Grab the recipe link
     const href = getUrl(data);
-    const link = document.createElement('a');
-    link.setAttribute('href', href);
+    const link = document.createElement("a");
+    link.setAttribute("href", href);
     link.innerText = titleText;
     title.appendChild(link); // Make the title a link
 
     // Grab the thumbnail
     const imageUrl = getImage(data);
-    const image = document.createElement('img');
-    image.setAttribute('src', imageUrl);
-    image.setAttribute('alt', titleText);
+    const image = document.createElement("img");
+    image.setAttribute("src", imageUrl);
+    image.setAttribute("alt", titleText);
 
     // Grab the organization name
     const organizationText = getOrganization(data);
-    const organization = document.createElement('p');
-    organization.classList.add('organization');
+    const organization = document.createElement("p");
+    organization.classList.add("organization");
     organization.innerText = organizationText;
 
     // Grab the reviews
-    const ratingVal = searchForKey(data, 'ratingValue');
-    const ratingTotal = searchForKey(data, 'ratingCount');
-    const rating = document.createElement('div');
-    rating.classList.add('rating');
+    const ratingVal = searchForKey(data, "ratingValue");
+    const ratingTotal = searchForKey(data, "ratingCount");
+    const rating = document.createElement("div");
+    rating.classList.add("rating");
     const numStars = Math.round(ratingVal);
     if (ratingVal) {
       rating.innerHTML = `
@@ -145,15 +145,15 @@ class RecipeCard extends HTMLElement {
     }
 
     // Grab the total time
-    const totalTime = searchForKey(data, 'totalTime');
-    const time = document.createElement('time');
+    const totalTime = searchForKey(data, "totalTime");
+    const time = document.createElement("time");
     time.innerText = convertTime(totalTime);
 
     // Grabt the ingredients
-    const ingredientsArr = searchForKey(data, 'recipeIngredient');
+    const ingredientsArr = searchForKey(data, "recipeIngredient");
     const ingredientsList = createIngredientList(ingredientsArr);
-    const ingredients = document.createElement('p');
-    ingredients.classList.add('ingredients');
+    const ingredients = document.createElement("p");
+    ingredients.classList.add("ingredients");
     ingredients.innerText = ingredientsList;
 
     // Add all of the elements to the card
@@ -187,7 +187,7 @@ function searchForKey(object, key) {
       value = object[k];
       return true;
     }
-    if (object[k] && typeof object[k] === 'object') {
+    if (object[k] && typeof object[k] === "object") {
       value = searchForKey(object[k], key);
       return value !== undefined;
     }
@@ -202,11 +202,11 @@ function searchForKey(object, key) {
  */
 function getTitle(data) {
   if (data.name) return data.name;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') {
-        if (data['@graph'][i]['name']) return data['@graph'][i]['name'];
-      };
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "Recipe") {
+        if (data["@graph"][i]["name"]) return data["@graph"][i]["name"];
+      }
     }
   }
   return null;
@@ -221,13 +221,15 @@ function getImage(data) {
   if (data.image?.url) return data.image.url;
   if (data.image?.contentUrl) return data.image.contentUrl;
   if (data.image?.thumbnail) return data.image.thumbnail;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'ImageObject') {
-        if (data['@graph'][i]['url']) return data['@graph'][i]['url'];
-        if (data['@graph'][i]['contentUrl']) return data['@graph'][i]['contentUrl'];
-        if (data['@graph'][i]['thumbnailUrl']) return data['@graph'][i]['thumbnailUrl'];
-      };
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "ImageObject") {
+        if (data["@graph"][i]["url"]) return data["@graph"][i]["url"];
+        if (data["@graph"][i]["contentUrl"])
+          return data["@graph"][i]["contentUrl"];
+        if (data["@graph"][i]["thumbnailUrl"])
+          return data["@graph"][i]["thumbnailUrl"];
+      }
     }
   }
   return null;
@@ -240,11 +242,12 @@ function getImage(data) {
  */
 function getUrl(data) {
   if (data.url) return data.url;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'Recipe') return data['@graph'][i]['@id'];
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "Recipe")
+        return data["@graph"][i]["@id"];
     }
-  };
+  }
   return null;
 }
 
@@ -256,13 +259,13 @@ function getUrl(data) {
  */
 function getOrganization(data) {
   if (data.publisher?.name) return data.publisher?.name;
-  if (data['@graph']) {
-    for (let i = 0; i < data['@graph'].length; i++) {
-      if (data['@graph'][i]['@type'] == 'WebSite') {
-        return data['@graph'][i].name;
+  if (data["@graph"]) {
+    for (let i = 0; i < data["@graph"].length; i++) {
+      if (data["@graph"][i]["@type"] == "WebSite") {
+        return data["@graph"][i].name;
       }
     }
-  };
+  }
   return null;
 }
 
@@ -273,25 +276,25 @@ function getOrganization(data) {
  * @return {String} formatted time string
  */
 function convertTime(time) {
-  let timeStr = '';
+  let timeStr = "";
 
   // Remove the 'PT'
   time = time.slice(2);
 
-  let timeArr = time.split('');
-  if (time.includes('H')) {
+  let timeArr = time.split("");
+  if (time.includes("H")) {
     for (let i = 0; i < timeArr.length; i++) {
-      if (timeArr[i] == 'H') return `${timeStr} hr`;
+      if (timeArr[i] == "H") return `${timeStr} hr`;
       timeStr += timeArr[i];
     }
   } else {
     for (let i = 0; i < timeArr.length; i++) {
-      if (timeArr[i] == 'M') return `${timeStr} min`;
+      if (timeArr[i] == "M") return `${timeStr} min`;
       timeStr += timeArr[i];
     }
   }
 
-  return '';
+  return "";
 }
 
 /**
@@ -302,7 +305,7 @@ function convertTime(time) {
  * @return {String} the string comma separate list of ingredients from the array
  */
 function createIngredientList(ingredientArr) {
-  let finalIngredientList = '';
+  let finalIngredientList = "";
 
   /**
    * Removes the quantity and measurement from an ingredient string.
@@ -310,14 +313,14 @@ function createIngredientList(ingredientArr) {
    * (sometimes there isn't, so this would fail on something like '2 apples' or 'Some olive oil').
    * For the purposes of this lab you don't have to worry about those cases.
    * @param {String} ingredient the raw ingredient string you'd like to process
-   * @return {String} the ingredient without the measurement & quantity 
+   * @return {String} the ingredient without the measurement & quantity
    * (e.g. '1 cup flour' returns 'flour')
    */
   function _removeQtyAndMeasurement(ingredient) {
-    return ingredient.split(' ').splice(2).join(' ');
+    return ingredient.split(" ").splice(2).join(" ");
   }
 
-  ingredientArr.forEach(ingredient => {
+  ingredientArr.forEach((ingredient) => {
     ingredient = _removeQtyAndMeasurement(ingredient);
     finalIngredientList += `${ingredient}, `;
   });
@@ -327,4 +330,4 @@ function createIngredientList(ingredientArr) {
 }
 
 // Define the Class so you can use it as a custom element
-customElements.define('recipe-card', RecipeCard);
+customElements.define("recipe-card", RecipeCard);
