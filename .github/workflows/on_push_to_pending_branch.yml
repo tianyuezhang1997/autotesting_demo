@@ -17,4 +17,4 @@ jobs:
     name: Check code style with prettier
     runs-on: ubuntu-latest
     steps:
-      - run: npx prettier --check ../*
+      - run: npx prettier --check ../assets/scripts/*.js
