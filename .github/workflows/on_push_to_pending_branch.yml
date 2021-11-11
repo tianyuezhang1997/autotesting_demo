@@ -19,4 +19,4 @@ jobs:
     steps:
       - run: cd ..
       - run: pwd
-      - run: npx prettier --check *.js
+      - run: npx prettier --check main_branch_test.js
