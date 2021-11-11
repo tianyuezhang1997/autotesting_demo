@@ -5,8 +5,8 @@ fixture `New Fixture`
     
 test(`20211109 New Test`, async t => {
     await t
-        .click(Selector('#button-wrapper button').withText('Show more'))    
+.click(Selector('#button-wrapper button').withText('Show more'))    
         .click(Selector('#button-wrapper button').withText('Show less'))
-        .click(Selector('#button-wrapper button').withText('Show more'))
+.click(Selector('#button-wrapper button').withText('Show more'))
         .click(Selector('#button-wrapper button').withText('Show less'))
 });
