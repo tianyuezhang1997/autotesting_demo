@@ -17,7 +17,4 @@ jobs:
     name: Check code style with prettier
     runs-on: ubuntu-latest
     steps:
-      - run: cd ..
-      - run: pwd
-      - run: ls -al
       - run: npx prettier --check on_push_to_main_branch.yml
