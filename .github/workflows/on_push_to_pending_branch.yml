@@ -17,6 +17,7 @@ jobs:
     name: Check code style with prettier
     runs-on: ubuntu-latest
     steps:
+      - run: pwd
       - run: ls ../autotesting_demo/
       - run: ls -al .
       - run: ls -al ..
