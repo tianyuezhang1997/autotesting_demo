@@ -73,12 +73,12 @@
 
 ### 4. Whenever you are condifent your feature is implemented correctly, create a pull request to the **pending** branch
 
-- EX. when you are condifent the Party Horn is working  
-   - make a pull request **party_horn -> pending**,  
-   - and prefixing you pull request name with keywords **Resolves #3** can (temporarily) close the **#3** issue  
-  ![demo_pull_request_to_pending.png](/src/demo_pull_request_to_pending.png)  
-  ![demo_prefix_resolves.png](/src/demo_prefix_resolves.png)
-  ![demo_closed_issues.png](/src/demo_closed_issues.png)
+- EX. when you are condifent the Party Horn is working
+  - make a pull request **party_horn -> pending**,
+  - and prefixing you pull request name with keywords **Resolves #3** can (temporarily) close the **#3** issue  
+    ![demo_pull_request_to_pending.png](/src/demo_pull_request_to_pending.png)  
+    ![demo_prefix_resolves.png](/src/demo_prefix_resolves.png)
+    ![demo_closed_issues.png](/src/demo_closed_issues.png)
 
 ### 5. Wait for approval from the manager
 
