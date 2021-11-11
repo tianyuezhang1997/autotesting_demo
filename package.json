@@ -1,0 +1,22 @@
+{
+  "name": "autotesting_demo",
+  "version": "1.0.0",
+  "description": "- Currently published page : **https://tianyuezhang1997.github.io/autotesting_demo/index.html**   \r - Set which branch to be published : https://github.com/tianyuezhang1997/autotesting_demo/settings/pages  \r - E2E Web Testing with TestCafe : **https://testautomationu.applitools.com/testcafe-tutorial/**  \r - Sections covered :\r   1. [Git Repo Branch Setting Demo](#git-repo-branch-setting-demo) \r   2. [Developing Workflow Demo](#developing-workflow-demo)  \r   3. [Testing Workflow Demo](#testing-workflow-demo)\r   4. [Managing Workflow Demo](#managing-workflow-demo)",
+  "main": "main_branch_test.js",
+  "devDependencies": {
+    "prettier": "2.4.1"
+  },
+  "scripts": {
+    "format": "prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tianyuezhang1997/autotesting_demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tianyuezhang1997/autotesting_demo/issues"
+  },
+  "homepage": "https://github.com/tianyuezhang1997/autotesting_demo#readme"
+}
