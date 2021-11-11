@@ -17,6 +17,5 @@ jobs:
     name: Check code style with prettier
     runs-on: windows-latest
     steps:
-      - run: npm init
-      - run: npm install --save-dev --save-exact prettier
+      - run: cd ..
       - run: npm run format
