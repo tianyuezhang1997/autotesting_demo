@@ -18,10 +18,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: pwd
-      - run: ls ../autotesting_demo/
-      - run: ls -al .
-      - run: ls -al ..
-      - run: ls -al ../..
-      - run: ls -al ../../..
-      - run: ls -al ../../../..
+      - run: ls -al
       - run: npx prettier --check ../autotesting_demo/*.{js,html,css}
