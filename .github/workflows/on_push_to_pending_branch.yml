@@ -17,7 +17,7 @@ jobs:
     name: Check code style with prettier
     runs-on: ubuntu-latest
     steps:
-      - run: cat ../autotesting_demo/README.md
+      - run: ls ../autotesting_demo/
       - run: ls -al .
       - run: ls -al ..
       - run: ls -al ../..
