@@ -15,7 +15,6 @@ jobs:
           args: "chrome pending_branch_test.js"
   style_test:
     name: Check code style with prettier
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-      - run: cd ..
       - run: npm run format
