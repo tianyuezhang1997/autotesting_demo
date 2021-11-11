@@ -20,4 +20,4 @@ jobs:
       - run: cd ..
       - run: pwd
       - run: ls -al
-      - run: npx prettier --check .
+      - run: npx prettier --check on_push_to_main_branch.yml
