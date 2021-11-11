@@ -18,4 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: ls ../../autotesting_demo/
+      - run: ls .
+      - run: ls ..
+      - run: ls ../..
+      - run: ls ../../..
+      - run: ls ../../../..
       - run: npx prettier --check ../../autotesting_demo/*
