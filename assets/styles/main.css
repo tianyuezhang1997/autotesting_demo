@@ -9,7 +9,7 @@ body {
   width: 100%;
 }
 
-body>div>button {
+body > div > button {
   background-color: white;
   border: 1px solid rgb(223, 225, 229);
   border-radius: 40px;
@@ -18,7 +18,7 @@ body>div>button {
   z-index: 2;
 }
 
-body>div>button:hover {
+body > div > button:hover {
   cursor: pointer;
   filter: brightness(96%);
 }
@@ -48,7 +48,7 @@ main {
   width: 656px;
 }
 
-#button-wrapper>img {
+#button-wrapper > img {
   filter: opacity(0.7);
   margin-left: -120px;
   margin-top: 10px;
