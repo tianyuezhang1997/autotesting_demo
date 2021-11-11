@@ -17,7 +17,6 @@ jobs:
     name: Check code style with prettier
     runs-on: ubuntu-latest
     steps:
-      - run: pwd
-      - run: ls -al ../autotesting_demo/
-      - run: ls -al ../../autotesting_demo/
-      - run: npx prettier --check ../autotesting_demo/*.{js,html,css}
+      - uses: actions/checkout@v2
+      - run: ls -al
+      - run: npx prettier --check .
