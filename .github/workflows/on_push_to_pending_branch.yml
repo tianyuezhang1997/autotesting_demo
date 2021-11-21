@@ -1,0 +1,22 @@
+name: push_to_pending_branch
+on:
+  push:
+    branches:
+      - pending
+jobs:
+  UI_test:
+    name: Test the new push to pending branch
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install TestCafe from 'npm' and Run Tests
+        uses: DevExpress/testcafe-action@latest
+        with:
+          args: "chrome pending_branch_test.js"
+  style_test:
+    name: Check code style with prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ls -al
+      - run: npx prettier --check .
