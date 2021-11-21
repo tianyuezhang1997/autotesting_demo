@@ -1,7 +1,7 @@
 import {Selector} from "testcafe";
 
 fixture`New Fixture`
-  .page`https://tianyuezhang1997.github.io/autotesting_demo/index.html`;
+  .page`https://testing.tianyuezhang1997.site/autotesting_demo/main/`;
 
 test(`20211110 New Test`, async (t) => {
   await t
