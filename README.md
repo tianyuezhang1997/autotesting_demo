@@ -1,4 +1,4 @@
-# Autotesting Demo (Under Construction)
+# Autotesting Demo (TEST_ON_PUSH_TO_Pending)
 
 ## Links :
 
