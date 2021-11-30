@@ -10,9 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: git remote add product ssh://root@tianyuezhang1997.site/var/repo/autotesting_demo.git
-      - env: 
+      - shell: bash
+        env:
           TESTING_SERVER_SECRET: ${{secrets.TESTING_SERVER_SECRET}}
-      - run : git push product "$TESTING_SERVER_SECRET"
+        run: git push product "$TESTING_SERVER_SECRET"
       - name: Install TestCafe from 'npm' and Run Tests
         uses: DevExpress/testcafe-action@latest
         with:
