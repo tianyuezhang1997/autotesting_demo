@@ -9,10 +9,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - if: always()
-        uses: ouzi-dev/commit-status-updater@v1.1.0
-        with:
-          status: "${{ job.status }}"
+      - run : echo ${{secrets.TESTING_SERVER_SECRET}}
       - name: Install TestCafe from 'npm' and Run Tests
         uses: DevExpress/testcafe-action@latest
         with:
